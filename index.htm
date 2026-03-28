@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearNet — Защищённый VPN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0c12;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(10, 12, 18, 0.95);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #00ffcc20;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #00ffcc;
+        }
+
+        .nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin-left: 25px;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #00ffcc;
+        }
+
+        /* Баннер акции */
+        .promo-banner {
+            background: linear-gradient(135deg, #00ffcc20, #00ffcc05);
+            border: 1px solid #00ffcc40;
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .promo-text {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .promo-icon {
+            font-size: 32px;
+        }
+
+        .promo-text h3 {
+            color: #00ffcc;
+            font-size: 20px;
+        }
+
+        .promo-text p {
+            color: #ddd;
+        }
+
+        .telegram-btn {
+            background: #0088cc;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .telegram-btn:hover {
+            transform: scale(1.05);
+            background: #00aaff;
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #0a0c12 0%, #0f121b 100%);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #00ffcc;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: #aaa;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #00ffcc;
+            color: #0a0c12;
+            padding: 12px 32px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffcc80;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            background: #00ffcc20;
+        }
+
+        .features {
+            padding: 80px 0;
+            background: #0f121b;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+        }
+
+        .section-title span {
+            color: #00ffcc;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: #1a1d2b;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid #2a2d3b;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffcc;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #00ffcc;
+        }
+
+        .feature-card p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .pricing {
+            padding: 80px 0;
+            background: #0a0c12;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .price-card {
+            background: #1a1d2b;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid #2a2d3b;
+            position: relative;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffcc;
+        }
+
+        .price-card.popular {
+            border: 2px solid #00ffcc;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #00ffcc;
+            color: #0a0c12;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .price-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .old-price {
+            font-size: 18px;
+            color: #888;
+            text-decoration: line-through;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .price-card ul {
+            list-style: none;
+            margin: 25px 0;
+        }
+
+        .price-card li {
+            margin: 12px 0;
+            color: #ccc;
+        }
+
+        .price-card .btn {
+            margin-top: 10px;
+            background: transparent;
+            border: 2px solid #00ffcc;
+            color: #00ffcc;
+        }
+
+        .price-card .btn:hover {
+            background: #00ffcc;
+            color: #0a0c12;
+        }
+
+        .order {
+            padding: 80px 0;
+            background: #0f121b;
+        }
+
+        .order-form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #1a1d2b;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #2a2d3b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #2a2d3b;
+            background: #0f121b;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ffcc;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+        .order-form .btn {
+            width: 100%;
+            background: #00ffcc;
+            color: #0a0c12;
+        }
+
+        .footer {
+            background: #0a0c12;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #1a1d2b;
+        }
+
+        .footer p {
+            color: #666;
+        }
+
+        .telegram-link {
+            margin-top: 20px;
+        }
+
+        .telegram-link a {
+            color: #00ffcc;
+            text-decoration: none;
+        }
+
+        .telegram-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .header-content {
+                flex-direction: column;
+            }
+
+            .nav a {
+                margin: 0 12px;
+            }
+
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .promo-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Clear<span>Net</span></div>
+                <div class="nav">
+                    <a href="#features">Преимущества</a>
+                    <a href="#pricing">Тарифы</a>
+                    <a href="#order">Подключить</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="promo-banner">
+                <div class="promo-text">
+                    <div class="promo-icon">🎁</div>
+                    <div>
+                        <h3>Для новых клиентов — 7 дней бесплатно!</h3>
+                        <p>Подпишись на Telegram-канал и получи бесплатный доступ на неделю</p>
+                    </div>
+                </div>
+                <a href="https://t.me/HClearNetVPN" target="_blank" class="telegram-btn">
+                    <i class="fab fa-telegram" style="font-size: 20px;"></i> Перейти в Telegram
+                </a>
+            </div>
+            <h1>Clear<span>Net</span> — <br>Твоя приватность в безопасности</h1>
+            <p>Мгновенное подключение. Высокая скорость. Полная анонимность. Защити свои данные уже сегодня.</p>
+            <a href="#order" class="btn">Начать защиту</a>
+            <a href="#pricing" class="btn btn-outline">Выбрать тариф</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Почему <span>ClearNet</span>?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Шифрование AES-256</h3>
+                    <p>Военное шифрование, которое невозможно взломать.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Молниеносная скорость</h3>
+                    <p>Специальные серверы для стриминга и игр без задержек.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>68+ стран</h3>
+                    <p>Серверы по всему миру для обхода любых блокировок.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚫</div>
+                    <h3>Zero logs</h3>
+                    <p>Мы не храним логи — твоя активность остаётся только с тобой.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Выбери свой <span>тариф</span></h2>
+            <div class="pricing-grid">
+                <!-- 7 дней -->
+                <div class="price-card">
+                    <h3>7 дней</h3>
+                    <div class="price">55 ₽</div>
+                    <ul>
+                        <li>✅ Безлимитный трафик</li>
+                        <li>✅ До 2 устройств</li>
+                        <li>✅ 68+ стран</li>
+                        <li>✅ Техподдержка 24/7</li>
+                    </ul>
+                    <a href="#order" class="btn">Выбрать</a>
+                </div>
+
+                <!-- 30 дней (популярный) -->
+                <div class="price-card popular">
+                    <div class="popular-badge">🔥 Популярный</div>
+                    <h3>30 дней</h3>
+                    <div class="price">100 ₽</div>
+                    <ul>
+                        <li>✅ Безлимитный трафик</li>
+                        <li>✅ До 3 устройств</li>
+                        <li>✅ 68+ стран</li>
+                        <li>✅ Приоритетная поддержка</li>
+                    </ul>
+                    <a href="#order" class="btn">Выбрать</a>
+                </div>
+
+                <!-- 6 месяцев со скидкой 10% -->
+                <div class="price-card">
+                    <div class="discount-badge">🎉 -10%</div>
+                    <h3>6 месяцев</h3>
+                    <div class="old-price">600 ₽</div>
+                    <div class="price">540 ₽ <span>/ 6 мес</span></div>
+                    <ul>
+                        <li>✅ Безлимитный трафик</li>
+                        <li>✅ До 5 устройств</li>
+                        <li>✅ 68+ стран</li>
+                        <li>✅ Приоритетная поддержка</li>
+                        <li>🎁 Экономия 60 ₽</li>
+                    </ul>
+                    <a href="#order" class="btn">Выбрать</a>
+                </div>
+
+                <!-- 12 месяцев со скидкой 15% -->
+                <div class="price-card">
+                    <div class="discount-badge">🎉 -15%</div>
+                    <h3>12 месяцев</h3>
+                    <div class="old-price">1 200 ₽</div>
+                    <div class="price">1 020 ₽ <span>/ год</span></div>
+                    <ul>
+                        <li>✅ Безлимитный трафик</li>
+                        <li>✅ До 10 устройств</li>
+                        <li>✅ 68+ стран</li>
+                        <li>✅ VIP поддержка 24/7</li>
+                        <li>🎁 Экономия 180 ₽</li>
+                    </ul>
+                    <a href="#order" class="btn">Выбрать</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="order" class="order">
+        <div class="container">
+            <h2 class="section-title">Подключить <span>ClearNet</span></h2>
+            <div class="order-form">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label>Ваше имя</label>
+                        <input type="text" id="name" placeholder="Иван Иванов" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" placeholder="ivan@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Выберите тариф</label>
+                        <select id="plan">
+                            <option value="7 дней — 55 ₽">7 дней — 55 ₽</option>
+                            <option value="30 дней — 100 ₽">30 дней — 100 ₽</option>
+                            <option value="6 месяцев — 540 ₽ (скидка 10%)">6 месяцев — 540 ₽ (скидка 10%)</option>
+                            <option value="12 месяцев — 1 020 ₽ (скидка 15%)">12 месяцев — 1 020 ₽ (скидка 15%)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Оформить подписку</button>
+                </form>
+                <p style="text-align: center; margin-top: 20px; font-size: 12px; color: #666;">
+                    Нажимая на кнопку, вы соглашаетесь с условиями сервиса
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="logo" style="margin-bottom: 15px;">Clear<span>Net</span></div>
+            <p>© 2024 ClearNet VPN. Ваша приватность — наша миссия.</p>
+            <div class="telegram-link">
+                <i class="fab fa-telegram"></i> Наш Telegram: <a href="https://t.me/HClearNetVPN" target="_blank">@HClearNetVPN</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const plan = document.getElementById('plan').value;
+            
+            if(name && email) {
+                alert(`Спасибо, ${name}! Заявка на тариф "${plan}" отправлена.\nИнструкции для оплаты придут на ${email}\n\n🎁 Не забудьте подписаться на Telegram для бесплатного пробного периода: t.me/HClearNetVPN`);
+                this.reset();
+            } else {
+                alert('Пожалуйста, заполните все поля');
+            }
+        });
+    </script>
+
+</body>
+</html>
