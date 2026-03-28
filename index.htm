@@ -62,7 +62,6 @@
             color: #00ffcc;
         }
 
-        /* Баннер акции */
         .promo-banner {
             background: linear-gradient(135deg, #00ffcc20, #00ffcc05);
             border: 1px solid #00ffcc40;
@@ -183,13 +182,13 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
         .feature-card {
             background: #1a1d2b;
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 16px;
             text-align: center;
             transition: transform 0.3s;
@@ -209,11 +208,12 @@
         .feature-card h3 {
             margin-bottom: 15px;
             color: #00ffcc;
+            font-size: 24px;
         }
 
         .feature-card p {
             color: #aaa;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .pricing {
@@ -246,33 +246,39 @@
             border: 2px solid #00ffcc;
         }
 
+        /* Увеличенные бейджики */
         .popular-badge {
             position: absolute;
-            top: -12px;
+            top: -15px;
             right: 20px;
             background: #00ffcc;
             color: #0a0c12;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: bold;
+            box-shadow: 0 0 15px #00ffcc;
+            z-index: 10;
         }
 
         .discount-badge {
             position: absolute;
-            top: -12px;
+            top: -15px;
             left: 20px;
             background: #ff6b6b;
             color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: bold;
+            box-shadow: 0 0 15px #ff6b6b;
+            z-index: 10;
         }
 
         .price-card h3 {
-            font-size: 24px;
+            font-size: 26px;
             margin-bottom: 15px;
+            margin-top: 10px;
         }
 
         .old-price {
@@ -296,11 +302,14 @@
         .price-card ul {
             list-style: none;
             margin: 25px 0;
+            text-align: left;
+            display: inline-block;
         }
 
         .price-card li {
             margin: 12px 0;
             color: #ccc;
+            font-size: 15px;
         }
 
         .price-card .btn {
@@ -308,6 +317,9 @@
             background: transparent;
             border: 2px solid #00ffcc;
             color: #00ffcc;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
         }
 
         .price-card .btn:hover {
@@ -327,39 +339,30 @@
             padding: 40px;
             border-radius: 20px;
             border: 1px solid #2a2d3b;
+            text-align: center;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #2a2d3b;
-            background: #0f121b;
-            color: #fff;
-            font-size: 16px;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #00ffcc;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        .order-form p {
+            margin-bottom: 25px;
             color: #ccc;
         }
 
-        .order-form .btn {
-            width: 100%;
-            background: #00ffcc;
+        .tg-bot-btn {
+            background: linear-gradient(135deg, #0088cc, #00ffcc);
             color: #0a0c12;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: bold;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .tg-bot-btn:hover {
+            transform: scale(1.05);
         }
 
         .footer {
@@ -408,6 +411,12 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .popular-badge, .discount-badge {
+                padding: 6px 16px;
+                font-size: 14px;
+                top: -12px;
+            }
         }
     </style>
 </head>
@@ -420,7 +429,7 @@
                 <div class="nav">
                     <a href="#features">Преимущества</a>
                     <a href="#pricing">Тарифы</a>
-                    <a href="#order">Подключить</a>
+                    <a href="#payment">Оплата</a>
                 </div>
             </div>
         </div>
@@ -442,11 +451,12 @@
             </div>
             <h1>Clear<span>Net</span> — <br>Твоя приватность в безопасности</h1>
             <p>Мгновенное подключение. Высокая скорость. Полная анонимность. Защити свои данные уже сегодня.</p>
-            <a href="#order" class="btn">Начать защиту</a>
+            <a href="#payment" class="btn">Начать защиту</a>
             <a href="#pricing" class="btn btn-outline">Выбрать тариф</a>
         </div>
     </section>
 
+    <!-- Преимущества (только шифрование, скорость, логи) -->
     <section id="features" class="features">
         <div class="container">
             <h2 class="section-title">Почему <span>ClearNet</span>?</h2>
@@ -462,11 +472,6 @@
                     <p>Специальные серверы для стриминга и игр без задержек.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>68+ стран</h3>
-                    <p>Серверы по всему миру для обхода любых блокировок.</p>
-                </div>
-                <div class="feature-card">
                     <div class="feature-icon">🚫</div>
                     <h3>Zero logs</h3>
                     <p>Мы не храним логи — твоя активность остаётся только с тобой.</p>
@@ -475,6 +480,7 @@
         </div>
     </section>
 
+    <!-- Тарифы -->
     <section id="pricing" class="pricing">
         <div class="container">
             <h2 class="section-title">Выбери свой <span>тариф</span></h2>
@@ -486,24 +492,22 @@
                     <ul>
                         <li>✅ Безлимитный трафик</li>
                         <li>✅ До 2 устройств</li>
-                        <li>✅ 68+ стран</li>
                         <li>✅ Техподдержка 24/7</li>
                     </ul>
-                    <a href="#order" class="btn">Выбрать</a>
+                    <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
                 <!-- 30 дней (популярный) -->
                 <div class="price-card popular">
-                    <div class="popular-badge">🔥 Популярный</div>
+                    <div class="popular-badge">🔥 ПОПУЛЯРНЫЙ</div>
                     <h3>30 дней</h3>
                     <div class="price">100 ₽</div>
                     <ul>
                         <li>✅ Безлимитный трафик</li>
-                        <li>✅ До 3 устройств</li>
-                        <li>✅ 68+ стран</li>
-                        <li>✅ Приоритетная поддержка</li>
+                        <li>✅ До 2 устройств</li>
+                        <li>✅ Техподдержка 24/7</li>
                     </ul>
-                    <a href="#order" class="btn">Выбрать</a>
+                    <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
                 <!-- 6 месяцев со скидкой 10% -->
@@ -511,15 +515,13 @@
                     <div class="discount-badge">🎉 -10%</div>
                     <h3>6 месяцев</h3>
                     <div class="old-price">600 ₽</div>
-                    <div class="price">540 ₽ <span>/ 6 мес</span></div>
+                    <div class="price">540 ₽ <span></span></div>
                     <ul>
                         <li>✅ Безлимитный трафик</li>
-                        <li>✅ До 5 устройств</li>
-                        <li>✅ 68+ стран</li>
-                        <li>✅ Приоритетная поддержка</li>
-                        <li>🎁 Экономия 60 ₽</li>
+                        <li>✅ До 2 устройств</li>
+                        <li>✅ Техподдержка 24/7</li>
                     </ul>
-                    <a href="#order" class="btn">Выбрать</a>
+                    <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
                 <!-- 12 месяцев со скидкой 15% -->
@@ -530,44 +532,26 @@
                     <div class="price">1 020 ₽ <span>/ год</span></div>
                     <ul>
                         <li>✅ Безлимитный трафик</li>
-                        <li>✅ До 10 устройств</li>
-                        <li>✅ 68+ стран</li>
-                        <li>✅ VIP поддержка 24/7</li>
-                        <li>🎁 Экономия 180 ₽</li>
+                        <li>✅ До 2 устройств</li>
+                        <li>✅ Техподдержка 24/7</li>
                     </ul>
-                    <a href="#order" class="btn">Выбрать</a>
+                    <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="order" class="order">
+    <!-- Оплата через Telegram -->
+    <section id="payment" class="order">
         <div class="container">
-            <h2 class="section-title">Подключить <span>ClearNet</span></h2>
+            <h2 class="section-title">Оплата через <span>Telegram</span></h2>
             <div class="order-form">
-                <form id="orderForm">
-                    <div class="form-group">
-                        <label>Ваше имя</label>
-                        <input type="text" id="name" placeholder="Иван Иванов" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" placeholder="ivan@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Выберите тариф</label>
-                        <select id="plan">
-                            <option value="7 дней — 55 ₽">7 дней — 55 ₽</option>
-                            <option value="30 дней — 100 ₽">30 дней — 100 ₽</option>
-                            <option value="6 месяцев — 540 ₽ (скидка 10%)">6 месяцев — 540 ₽ (скидка 10%)</option>
-                            <option value="12 месяцев — 1 020 ₽ (скидка 15%)">12 месяцев — 1 020 ₽ (скидка 15%)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn">Оформить подписку</button>
-                </form>
-                <p style="text-align: center; margin-top: 20px; font-size: 12px; color: #666;">
-                    Нажимая на кнопку, вы соглашаетесь с условиями сервиса
-                </p>
+                <p>🤖 Для оплаты подписки перейдите в нашего Telegram-бота</p>
+                <p style="font-size: 14px; margin-bottom: 25px;">Выберите тариф и получите доступ мгновенно</p>
+                <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="tg-bot-btn">
+                    <i class="fab fa-telegram" style="font-size: 24px;"></i> 
+                    Перейти к оплате @ClearNET_VpnBot
+                </a>
             </div>
         </div>
     </section>
@@ -584,22 +568,6 @@
 
     <!-- Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <script>
-        document.getElementById('orderForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const plan = document.getElementById('plan').value;
-            
-            if(name && email) {
-                alert(`Спасибо, ${name}! Заявка на тариф "${plan}" отправлена.\nИнструкции для оплаты придут на ${email}\n\n🎁 Не забудьте подписаться на Telegram для бесплатного пробного периода: t.me/HClearNetVPN`);
-                this.reset();
-            } else {
-                alert('Пожалуйста, заполните все поля');
-            }
-        });
-    </script>
 
 </body>
 </html>
