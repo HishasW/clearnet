@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClearNet — Защищённый VPN</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         * {
             margin: 0;
@@ -246,7 +247,6 @@
             border: 2px solid #00ffcc;
         }
 
-        /* Увеличенные бейджики */
         .popular-badge {
             position: absolute;
             top: -15px;
@@ -365,6 +365,68 @@
             transform: scale(1.05);
         }
 
+        /* Секция контактов */
+        .contacts {
+            padding: 80px 0;
+            background: #0a0c12;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: #1a1d2b;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid #2a2d3b;
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffcc;
+        }
+
+        .contact-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .contact-card h3 {
+            color: #00ffcc;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            color: #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .contact-email {
+            display: inline-block;
+            background: #0f121b;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #00ffcc;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 1px solid #00ffcc40;
+        }
+
+        .contact-email:hover {
+            background: #00ffcc20;
+            border-color: #00ffcc;
+        }
+
         .footer {
             background: #0a0c12;
             padding: 40px 0;
@@ -430,6 +492,7 @@
                     <a href="#features">Преимущества</a>
                     <a href="#pricing">Тарифы</a>
                     <a href="#payment">Оплата</a>
+                    <a href="#contacts">Контакты</a>
                 </div>
             </div>
         </div>
@@ -456,7 +519,6 @@
         </div>
     </section>
 
-    <!-- Преимущества (только шифрование, скорость, логи) -->
     <section id="features" class="features">
         <div class="container">
             <h2 class="section-title">Почему <span>ClearNet</span>?</h2>
@@ -480,12 +542,10 @@
         </div>
     </section>
 
-    <!-- Тарифы -->
     <section id="pricing" class="pricing">
         <div class="container">
             <h2 class="section-title">Выбери свой <span>тариф</span></h2>
             <div class="pricing-grid">
-                <!-- 7 дней -->
                 <div class="price-card">
                     <h3>7 дней</h3>
                     <div class="price">55 ₽</div>
@@ -497,7 +557,6 @@
                     <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
-                <!-- 30 дней (популярный) -->
                 <div class="price-card popular">
                     <div class="popular-badge">🔥 ПОПУЛЯРНЫЙ</div>
                     <h3>30 дней</h3>
@@ -510,12 +569,11 @@
                     <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
-                <!-- 6 месяцев со скидкой 10% -->
                 <div class="price-card">
                     <div class="discount-badge">🎉 -10%</div>
                     <h3>6 месяцев</h3>
                     <div class="old-price">600 ₽</div>
-                    <div class="price">540 ₽ <span></span></div>
+                    <div class="price">540 ₽ <span>/ 6 мес</span></div>
                     <ul>
                         <li>✅ Безлимитный трафик</li>
                         <li>✅ До 2 устройств</li>
@@ -524,7 +582,6 @@
                     <a href="https://t.me/ClearNET_VpnBot" target="_blank" class="btn">Оплатить</a>
                 </div>
 
-                <!-- 12 месяцев со скидкой 15% -->
                 <div class="price-card">
                     <div class="discount-badge">🎉 -15%</div>
                     <h3>12 месяцев</h3>
@@ -541,7 +598,6 @@
         </div>
     </section>
 
-    <!-- Оплата через Telegram -->
     <section id="payment" class="order">
         <div class="container">
             <h2 class="section-title">Оплата через <span>Telegram</span></h2>
@@ -552,6 +608,31 @@
                     <i class="fab fa-telegram" style="font-size: 24px;"></i> 
                     Перейти к оплате @ClearNET_VpnBot
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contacts" class="contacts">
+        <div class="container">
+            <h2 class="section-title">Свяжитесь с <span>нами</span></h2>
+            <div class="contacts-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">👥</div>
+                    <h3>Поддержка клиентов</h3>
+                    <p>Вопросы по подключению, оплате и техническая помощь</p>
+                    <a href="mailto:ClearNET.help@gmail.com" class="contact-email">
+                        📧 ClearNET.help@gmail.com
+                    </a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">💼</div>
+                    <h3>Коммерческие предложения</h3>
+                    <p>Сотрудничество, партнёрство и реклама</p>
+                    <a href="mailto:Hishas66@gmail.com" class="contact-email">
+                        📧 Hishas66@gmail.com
+                    </a>
+                </div>
             </div>
         </div>
     </section>
