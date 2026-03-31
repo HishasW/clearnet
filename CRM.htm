@@ -15,12 +15,60 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0a0c12;
             color: #e0e0e0;
-            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        /* Стили для входа */
+        .login-container {
+            background: #1a1d2b;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #00ffcc40;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: #00ffcc;
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #2a2d3b;
+            background: #0f121b;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .login-container input:focus {
+            outline: none;
+            border-color: #00ffcc;
+        }
+
+        .login-container .btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .error-msg {
+            color: #ff4757;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        /* Основные стили CRM */
+        .crm-container {
+            display: none;
+            width: 100%;
         }
 
         .header {
@@ -54,6 +102,20 @@
 
         .back-link:hover {
             background: #00ffcc20;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff6b7c;
         }
 
         .tabs {
@@ -185,11 +247,6 @@
             box-shadow: 0 0 15px #00ffcc80;
         }
 
-        .btn-danger {
-            background: #ff4757;
-            color: white;
-        }
-
         .search-bar {
             margin-bottom: 20px;
         }
@@ -313,157 +370,176 @@
             .finance-grid {
                 grid-template-columns: 1fr;
             }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="logo">Clear<span>Net</span> CRM</div>
-            <a href="index.html" class="back-link">← Вернуться на сайт</a>
-        </div>
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('clients')">👥 Клиенты</button>
-            <button class="tab" onclick="switchTab('finance')">💰 Финансы</button>
-        </div>
+    <!-- Форма входа -->
+    <div id="loginPanel" class="login-container">
+        <h2>🔐 Вход в CRM</h2>
+        <input type="text" id="loginUsername" placeholder="Логин">
+        <input type="password" id="loginPassword" placeholder="Пароль">
+        <button class="btn" onclick="checkLogin()">Войти</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
 
-        <!-- Вкладка: Клиенты -->
-        <div id="clientsTab">6:01 31.03.2026
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalClients">0</div>
-                    <div class="stat-label">Всего клиентов</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="activeClients">0</div>
-                    <div class="stat-label">Активных</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="expiredClients">0</div>
-                    <div class="stat-label">Просрочено</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalIncome">0</div>
-                    <div class="stat-label">Доход за всё время</div>
-                    <div class="stat-sub" id="totalIncomeSub"></div>
+    <!-- Основной контент CRM (скрыт до входа) -->
+    <div id="crmContent" class="crm-container">
+        <div class="container">
+            <div class="header">
+                <div class="logo">Clear<span>Net</span> CRM</div>
+                <div style="display: flex; gap: 15px;">
+                    <a href="index.html" class="back-link">← Вернуться на сайт</a>
+                    <button class="logout-btn" onclick="logout()">🚪 Выйти</button>
                 </div>
             </div>
 
-            <!-- Форма добавления -->
-            <div class="add-form">
-                <div class="form-title">➕ Добавить клиента</div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Имя клиента</label>
-                        <input type="text" id="clientName" placeholder="Иван Иванов">
-                    </div>
-                    <div class="form-group">
-                        <label>Telegram ID</label>
-                        <input type="text" id="clientTgId" placeholder="123456789">
-                    </div>
-                    <div class="form-group">
-                        <label>Telegram @username</label>
-                        <input type="text" id="clientUsername" placeholder="@ivan_ivanov">
-                    </div>
-                    <div class="form-group">
-                        <label>Тариф</label>
-                        <select id="clientPlan">
-                            <option value="7 дней — 55₽" data-price="55">7 дней — 55₽</option>
-                            <option value="30 дней — 100₽" data-price="100">30 дней — 100₽</option>
-                            <option value="6 месяцев — 540₽" data-price="540">6 месяцев — 540₽</option>
-                            <option value="12 месяцев — 1020₽" data-price="1020">12 месяцев — 1020₽</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Статус</label>
-                        <select id="clientStatus">
-                            <option value="active">Активен</option>
-                            <option value="expired">Просрочен</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="btn" onclick="addClient()">Добавить клиента</button>
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('clients')">👥 Клиенты</button>
+                <button class="tab" onclick="switchTab('finance')">💰 Финансы</button>
             </div>
 
-            <!-- Поиск -->
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="🔍 Поиск по имени, Telegram ID или @username..." onkeyup="filterTable()">
-            </div>
+            <!-- Вкладка: Клиенты -->
+            <div id="clientsTab">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalClients">0</div>
+                        <div class="stat-label">Всего клиентов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeClients">0</div>
+                        <div class="stat-label">Активных</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="expiredClients">0</div>
+                        <div class="stat-label">Просрочено</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalIncome">0</div>
+                        <div class="stat-label">💰 Доход за всё время</div>
+                        <div class="stat-sub" id="totalIncomeSub"></div>
+                    </div>
+                </div>
 
-            <!-- Таблица клиентов -->
-            <div class="table-container">
-                <table id="clientsTable">
-                    <thead>
-                        <tr>
-                            <th>Имя</th>
-                            <th>Telegram ID</th>
-                            <th>@username</th>
-                            <th>Тариф</th>
-                            <th>Статус</th>
-                            <th>Дата подключения</th>
-                            <th>Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientsList">
-                        <tr>
-                            <td colspan="7" style="text-align: center;">Нет клиентов. Добавьте первого!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                <div class="add-form">
+                    <div class="form-title">➕ Добавить клиента</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Имя клиента</label>
+                            <input type="text" id="clientName" placeholder="Иван Иванов">
+                        </div>
+                        <div class="form-group">
+                            <label>Telegram ID</label>
+                            <input type="text" id="clientTgId" placeholder="123456789">
+                        </div>
+                        <div class="form-group">
+                            <label>Telegram @username</label>
+                            <input type="text" id="clientUsername" placeholder="@ivan_ivanov">
+                        </div>
+                        <div class="form-group">
+                            <label>Тариф</label>
+                            <select id="clientPlan">
+                                <option value="7 дней — 55₽" data-price="55">7 дней — 55₽</option>
+                                <option value="30 дней — 100₽" data-price="100">30 дней — 100₽</option>
+                                <option value="6 месяцев — 540₽" data-price="540">6 месяцев — 540₽</option>
+                                <option value="12 месяцев — 1020₽" data-price="1020">12 месяцев — 1020₽</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Статус</label>
+                            <select id="clientStatus">
+                                <option value="active">Активен</option>
+                                <option value="expired">Просрочен</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="addClient()">Добавить клиента</button>
+                </div>
 
-        <!-- Вкладка: Финансы -->
-        <div id="financeTab" style="display: none;">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="financeTotalIncome">0</div>
-                    <div class="stat-label">Общий доход</div>
-                    <div class="stat-sub">за всё время</div>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="🔍 Поиск по имени, Telegram ID или @username..." onkeyup="filterTable()">
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="financeActiveIncome">0</div>
-                    <div class="stat-label">Доход от активных</div>
-                    <div class="stat-sub">текущие подписки</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="financeAvgCheck">0</div>
-                    <div class="stat-label">Средний чек</div>
-                    <div class="stat-sub">на одного клиента</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="financePlanCount">0</div>
-                    <div class="stat-label">Всего продаж</div>
-                    <div class="stat-sub">количество подписок</div>
-                </div>
-            </div>
 
-            <div class="finance-grid">
-                <div class="finance-table">
-                    <h3>📊 Доход по тарифам</h3>
-                    <table id="incomeByPlanTable">
+                <div class="table-container">
+                    <table id="clientsTable">
                         <thead>
-                            <tr><th>Тариф</th><th>Продаж</th><th>Доход</th></tr>
+                            <tr><th>Имя</th><th>Telegram ID</th><th>@username</th><th>Тариф</th><th>Статус</th><th>Дата</th><th>Действия</th></tr>
                         </thead>
-                        <tbody id="incomeByPlanBody"><tr><td colspan="3">Загрузка...</td></tr></tbody>
+                        <tbody id="clientsList"><tr><td colspan="7">Нет клиентов</td></tr></tbody>
                     </table>
                 </div>
-                <div class="finance-table">
-                    <h3>📅 Доход по месяцам</h3>
-                    <table id="incomeByMonthTable">
-                        <thead>
-                            <tr><th>Месяц</th><th>Продаж</th><th>Доход</th></tr>
-                        </thead>
-                        <tbody id="incomeByMonthBody"><tr><td colspan="3">Загрузка...</td></tr></tbody>
-                    </table>
+            </div>
+
+            <!-- Вкладка: Финансы -->
+            <div id="financeTab" style="display: none;">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-number" id="financeTotalIncome">0</div><div class="stat-label">💰 Общий доход</div><div class="stat-sub">за всё время</div></div>
+                    <div class="stat-card"><div class="stat-number" id="financeActiveIncome">0</div><div class="stat-label">Доход от активных</div><div class="stat-sub">текущие подписки</div></div>
+                    <div class="stat-card"><div class="stat-number" id="financeAvgCheck">0</div><div class="stat-label">Средний чек</div><div class="stat-sub">на одного клиента</div></div>
+                    <div class="stat-card"><div class="stat-number" id="financePlanCount">0</div><div class="stat-label">Всего продаж</div><div class="stat-sub">количество подписок</div></div>
+                </div>
+                <div class="finance-grid">
+                    <div class="finance-table"><h3>📊 Доход по тарифам</h3><table><thead><tr><th>Тариф</th><th>Продаж</th><th>Доход</th></tr></thead><tbody id="incomeByPlanBody"></tbody></table></div>
+                    <div class="finance-table"><h3>📅 Доход по месяцам</h3><table><thead><tr><th>Месяц</th><th>Продаж</th><th>Доход</th></tr></thead><tbody id="incomeByMonthBody"></tbody></table></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        let clients = JSON.parse(localStorage.getItem('clearnet_clients')) || [];
+        // Парольная защита
+        const VALID_LOGIN = "Admin";
+        const VALID_PASSWORD = "Hishas";
+
+        function checkLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (username === VALID_LOGIN && password === VALID_PASSWORD) {
+                localStorage.setItem('crm_auth', 'true');
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('crmContent').style.display = 'block';
+                initCRM();
+            } else {
+                errorDiv.textContent = 'Неверный логин или пароль';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('crm_auth');
+            document.getElementById('loginPanel').style.display = 'flex';
+            document.getElementById('crmContent').style.display = 'none';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        function checkAuth() {
+            if (localStorage.getItem('crm_auth') === 'true') {
+                document.getElementById('loginPanel').style.display = 'none';
+                document.getElementById('crmContent').style.display = 'block';
+                initCRM();
+            } else {
+                document.getElementById('loginPanel').style.display = 'flex';
+                document.getElementById('crmContent').style.display = 'none';
+            }
+        }
+
+        // Вся CRM логика
+        let clients = [];
+
+        function initCRM() {
+            clients = JSON.parse(localStorage.getItem('clearnet_clients')) || [];
+            renderTable();
+            updateStats();
+            updateFinance();
+        }
 
         function getPriceFromPlan(plan) {
             const match = plan.match(/(\d+)₽/);
@@ -489,7 +565,7 @@
                 return;
             }
 
-            const newClient = {
+            clients.push({
                 id: Date.now(),
                 name: name,
                 tgId: tgId,
@@ -499,9 +575,7 @@
                 status: status,
                 date: new Date().toLocaleDateString('ru-RU'),
                 dateFull: new Date().toISOString()
-            };
-
-            clients.push(newClient);
+            });
             saveClients();
 
             document.getElementById('clientName').value = '';
@@ -512,25 +586,15 @@
         function editClient(id) {
             const client = clients.find(c => c.id === id);
             if (!client) return;
-
             const newName = prompt('Новое имя:', client.name);
             if (newName) client.name = newName;
-
             const newTgId = prompt('Новый Telegram ID:', client.tgId || '');
             if (newTgId !== null) client.tgId = newTgId;
-
             const newUsername = prompt('Новый @username:', client.username || '');
             if (newUsername !== null) client.username = newUsername;
-
-            const newPlan = prompt('Новый тариф (7 дней — 55₽, 30 дней — 100₽, 6 месяцев — 540₽, 12 месяцев — 1020₽):', client.plan);
-            if (newPlan) {
-                client.plan = newPlan;
-                client.price = getPriceFromPlan(newPlan);
-            }
-
-            const newStatus = confirm('Изменить статус на "Просрочен"?') ? 'expired' : 'active';
-            client.status = newStatus;
-
+            const newPlan = prompt('Новый тариф:', client.plan);
+            if (newPlan) { client.plan = newPlan; client.price = getPriceFromPlan(newPlan); }
+            client.status = confirm('Изменить статус на "Просрочен"?') ? 'expired' : 'active';
             saveClients();
         }
 
@@ -544,158 +608,75 @@
         function renderTable() {
             const tbody = document.getElementById('clientsList');
             const searchValue = document.getElementById('searchInput')?.value.toLowerCase() || '';
-            
-            let filteredClients = clients.filter(client => 
-                client.name.toLowerCase().includes(searchValue) ||
-                (client.tgId && client.tgId.toString().includes(searchValue)) ||
-                (client.username && client.username.toLowerCase().includes(searchValue))
+            const filtered = clients.filter(c => 
+                c.name.toLowerCase().includes(searchValue) ||
+                (c.tgId && c.tgId.includes(searchValue)) ||
+                (c.username && c.username.toLowerCase().includes(searchValue))
             );
-
-            if (filteredClients.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Клиенты не найдены</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = filteredClients.map(client => `
-                <tr>
-                    <td>${escapeHtml(client.name)}</td>
-                    <td><code>${escapeHtml(client.tgId || '—')}</code></td>
-                    <td>${escapeHtml(client.username || '—')}</td>
-                    <td>${escapeHtml(client.plan)}</td>
-                    <td class="${client.status === 'active' ? 'status-active' : 'status-expired'}">
-                        ${client.status === 'active' ? '✅ Активен' : '❌ Просрочен'}
-                    </td>
-                    <td>${client.date}</td>
-                    <td class="action-buttons">
-                        <button class="edit-btn" onclick="editClient(${client.id})">✏️</button>
-                        <button class="delete-btn" onclick="deleteClient(${client.id})">🗑️</button>
-                    </td>
-                </tr>
-            `).join('');
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7">Клиенты не найдены</td></tr>'; return; }
+            tbody.innerHTML = filtered.map(c => `<tr>
+                <td>${escapeHtml(c.name)}</td>
+                <td><code>${escapeHtml(c.tgId || '—')}</code></td>
+                <td>${escapeHtml(c.username || '—')}</td>
+                <td>${escapeHtml(c.plan)}</td>
+                <td class="${c.status === 'active' ? 'status-active' : 'status-expired'}">${c.status === 'active' ? '✅ Активен' : '❌ Просрочен'}</td>
+                <td>${c.date}</td>
+                <td class="action-buttons"><button class="edit-btn" onclick="editClient(${c.id})">✏️</button><button class="delete-btn" onclick="deleteClient(${c.id})">🗑️</button></td>
+            </tr>`).join('');
         }
 
         function updateStats() {
-            const total = clients.length;
-            const active = clients.filter(c => c.status === 'active').length;
-            const expired = total - active;
-            
+            const total = clients.length, active = clients.filter(c => c.status === 'active').length;
             let totalIncome = 0;
-            clients.forEach(client => {
-                if (client.price) totalIncome += client.price;
-            });
-
+            clients.forEach(c => { if (c.price) totalIncome += c.price; });
             document.getElementById('totalClients').textContent = total;
             document.getElementById('activeClients').textContent = active;
-            document.getElementById('expiredClients').textContent = expired;
+            document.getElementById('expiredClients').textContent = total - active;
             document.getElementById('totalIncome').textContent = totalIncome.toLocaleString();
             document.getElementById('totalIncomeSub').textContent = `₽ ${totalIncome.toLocaleString()}`;
         }
 
         function updateFinance() {
-            let totalIncome = 0;
-            clients.forEach(client => {
-                if (client.price) totalIncome += client.price;
-            });
-            
-            let activeIncome = 0;
-            clients.filter(c => c.status === 'active').forEach(client => {
-                if (client.price) activeIncome += client.price;
-            });
-            
-            const avgCheck = clients.length > 0 ? Math.round(totalIncome / clients.length) : 0;
-            
+            let totalIncome = 0, activeIncome = 0;
+            clients.forEach(c => { if (c.price) totalIncome += c.price; if (c.status === 'active') activeIncome += c.price; });
+            const avgCheck = clients.length ? Math.round(totalIncome / clients.length) : 0;
             document.getElementById('financeTotalIncome').textContent = totalIncome.toLocaleString();
             document.getElementById('financeActiveIncome').textContent = activeIncome.toLocaleString();
             document.getElementById('financeAvgCheck').textContent = avgCheck.toLocaleString();
             document.getElementById('financePlanCount').textContent = clients.length;
-            
+
             const plans = {};
-            clients.forEach(client => {
-                if (!plans[client.plan]) plans[client.plan] = { count: 0, income: 0 };
-                plans[client.plan].count++;
-                plans[client.plan].income += client.price || 0;
-            });
-            
+            clients.forEach(c => { if (!plans[c.plan]) plans[c.plan] = { count: 0, income: 0 }; plans[c.plan].count++; plans[c.plan].income += c.price || 0; });
             const planBody = document.getElementById('incomeByPlanBody');
-            if (Object.keys(plans).length === 0) {
-                planBody.innerHTML = '<tr><td colspan="3">Нет данных</td></tr>';
-            } else {
-                planBody.innerHTML = Object.entries(plans).map(([plan, data]) => `
-                    <tr>
-                        <td>${escapeHtml(plan)}</td>
-                        <td>${data.count}</td>
-                        <td>${data.income.toLocaleString()} ₽</td>
-                    </tr>
-                `).join('');
-            }
-            
-            const months = {};
-            const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-            
-            clients.forEach(client => {
-                if (client.dateFull) {
-                    const date = new Date(client.dateFull);
-                    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-                    const monthName = `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-                    if (!months[monthKey]) months[monthKey] = { name: monthName, count: 0, income: 0 };
-                    months[monthKey].count++;
-                    months[monthKey].income += client.price || 0;
+            if (!Object.keys(plans).length) planBody.innerHTML = '<tr><td colspan="3">Нет данных</td></tr>';
+            else planBody.innerHTML = Object.entries(plans).map(([plan, d]) => `<tr><td>${escapeHtml(plan)}</td><td>${d.count}</td><td>${d.income.toLocaleString()} ₽</td></tr>`).join('');
+
+            const months = {}, monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+            clients.forEach(c => {
+                if (c.dateFull) {
+                    const date = new Date(c.dateFull), key = `${date.getFullYear()}-${date.getMonth()+1}`;
+                    if (!months[key]) months[key] = { name: `${monthNames[date.getMonth()]} ${date.getFullYear()}`, count: 0, income: 0 };
+                    months[key].count++; months[key].income += c.price || 0;
                 }
             });
-            
             const monthBody = document.getElementById('incomeByMonthBody');
-            const sortedMonths = Object.entries(months).sort((a, b) => b[0].localeCompare(a[0]));
-            if (sortedMonths.length === 0) {
-                monthBody.innerHTML = '<tr><td colspan="3">Нет данных</td></tr>';
-            } else {
-                monthBody.innerHTML = sortedMonths.map(([key, data]) => `
-                    <tr>
-                        <td>${data.name}</td>
-                        <td>${data.count}</td>
-                        <td>${data.income.toLocaleString()} ₽</td>
-                    </tr>
-                `).join('');
-            }
+            const sorted = Object.entries(months).sort((a,b)=>b[0].localeCompare(a[0]));
+            if (!sorted.length) monthBody.innerHTML = '<tr><td colspan="3">Нет данных</td></tr>';
+            else monthBody.innerHTML = sorted.map(([k,d]) => `<tr><td>${d.name}</td><td>${d.count}</td><td>${d.income.toLocaleString()} ₽</td></tr>`).join('');
         }
 
-        function filterTable() {
-            renderTable();
-        }
-
+        function filterTable() { renderTable(); }
         function switchTab(tab) {
-            const clientsTab = document.getElementById('clientsTab');
-            const financeTab = document.getElementById('financeTab');
+            const clientsTab = document.getElementById('clientsTab'), financeTab = document.getElementById('financeTab');
             const tabs = document.querySelectorAll('.tab');
-            
             tabs.forEach(t => t.classList.remove('active'));
-            
-            if (tab === 'clients') {
-                clientsTab.style.display = 'block';
-                financeTab.style.display = 'none';
-                tabs[0].classList.add('active');
-                updateStats();
-                renderTable();
-            } else {
-                clientsTab.style.display = 'none';
-                financeTab.style.display = 'block';
-                tabs[1].classList.add('active');
-                updateFinance();
-            }
+            if (tab === 'clients') { clientsTab.style.display = 'block'; financeTab.style.display = 'none'; tabs[0].classList.add('active'); updateStats(); renderTable(); }
+            else { clientsTab.style.display = 'none'; financeTab.style.display = 'block'; tabs[1].classList.add('active'); updateFinance(); }
         }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
 
-        renderTable();
-        updateStats();
-        updateFinance();
+        checkAuth();
     </script>
 </body>
 </html>
